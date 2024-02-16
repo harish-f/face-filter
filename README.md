@@ -1,4 +1,4 @@
-# How the project is structured
+# 1. How the project is structured
 The project is structured across 2 repos, this is the repo for the Flask server, and this [repo](https://github.com/SeansC12/face_filter_web) is the Vite server. Why is it like this? The Vite server accesses the Flask camera feed via the HTML element `<iframe>`
 
 # How to run
@@ -39,7 +39,7 @@ After this, go to the localhost URL given by the CLI tool, then enjoy.
 ## What if my IP address of the Flask server is not http://127.0.0.1:5000
 In the textfield on your localhost URL (the Vite server), please put in the URL of the different Flask server (do not put a / at the end of the URL). For example, only put `http://127.0.0.1:5000` not `http://127.0.0.1:5000/`.
 
-# How to use the app
+# 2. How to use the app
 There are 3 main sections of the app
 - The theme/textbox for Flask server address
 - Video feed (`iframe`)
@@ -51,7 +51,7 @@ There are 3 main sections of the app
 - The colour green represents what prop is currently enabled.
 - The indigo gradient represents the uniqueness of the moustache prop, due to its ability to be adjusted based on your finger pinch height
 
-# Why unnecessarily complicated to host?
+# 3. Why unnecessarily complicated to host?
 Our initial plan was to deploy all of this on the cloud, so that you need not self-host. In fact, we deployed all of this already, however, it wasn't optimal. Firstly, Flask is a full-stack web framework, hence, the video from the camera would have to be sent to the server (location of hosting). If deployed on the cloud, the latency to send the video feed to the server for processing and back is too laggy and unusable. We tried this and it was not a good UX. So, we thought we could just deploy the Vite server and not the Flask server. However, if the Vite is a HTTPS server, the embedded `<iframe>` HTML page also has to be HTTPS. It is a browser policy. After all that, we decided that self-hosting both servers on your Mac is the best possible option.
 
 We apologise for the inconvenience. If it doesn't work and it doesn't go against PT marking "fairness", we are happy to debug the issue WITHOUT changing the code should there be dependency issues.
