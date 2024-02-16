@@ -38,3 +38,6 @@ In the textfield on your localhost URL (the Vite server), please put in the URL 
 We deployed all of this already, however, it wasn't optimal. Firstly, Flask is a full-stack web framework, hence, the video from the camera would have to be sent to the server. If deployed on the cloud, the latency to send the video feed to the server and back is too laggy and unusable. We tried this and it was not a good UX. So, we thought we could just deploy the Vite server and not the Flask server. However, if the Vite is a HTTPS server, the embedded `<iframe>` HTML page has to also be HTTPS. It is a browser policy. After all that, we decided that self-hosting it on your Mac is the best possible option.
 
 We apologise for the inconvenience. If it doesn't work and it doesn't go against PT marking "fairness", we are happy to debug the issue WITHOUT changing the code should there be dependency issues.
+
+# Demonstration
+We uploaded a demonstration on Google drive [here](https://drive.google.com/file/d/1jIw62yph2-JvK4hNi9jO19rJt8XAwiPl/view?usp=sharing).
