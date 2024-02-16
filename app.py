@@ -75,7 +75,8 @@ def overlay_image(frame, overlay_path, prop_index, scaleVal):
             desired_width, desired_height = resize_overlay_image(True, image, int(getFaceWidth(landmarks_points)*1*scaleVal))
 
         # Resize the image
-        overlay_image = cv2.resize(image, (desired_width, desired_height))
+        try: overlay_image = cv2.resize(image, (desired_width, desired_height))
+        except: continue
 
         # Extract the specified keypoint coordinates
         if prop_index == 0:
@@ -191,6 +192,8 @@ def video_feed():
         if prop_selected == 0:
             for c in range(3):
                 frame[10:-10,-30:-20,c] = sliderBase
+                if buttonPos + sliderSize >= frameHeight: buttonPos = frameHeight - sliderSize -1
+                if buttonPos <= 0: buttonPos = 0
                 frame[buttonPos:buttonPos+sliderSize,-37:-12,c] = sliderButton
 
 
@@ -223,7 +226,7 @@ def video_feed():
                         initialFinger = keypoints[4].y
         
         # Overlay the image with the specified keypoint
-        frame = overlay_image(frame, overlay_path[prop_selected], prop_selected, (sliderVal/255 + 0.5) if prop_selected == 0 else 1)
+        frame = overlay_image(frame, overlay_path[prop_selected], prop_selected, (255/sliderVal * 0.3) if prop_selected == 0 else 1)
             
 
         # Encode the frame as JPEG
