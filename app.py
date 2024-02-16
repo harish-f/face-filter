@@ -72,7 +72,7 @@ detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
 
 
-prop_selected = 2
+prop_selected = 0
 
 def getFaceWidth(keypoints):
     return keypoints[16][0] - keypoints[0][0]
@@ -127,6 +127,10 @@ def overlay_image(frame, overlay_path, prop_index, scaleVal):
             desired_width, desired_height = resize_overlay_image(True, image, int(getFaceWidth(landmarks_points)*2))
         elif prop_index == 3:
             desired_width, desired_height = resize_overlay_image(True, image, int(getFaceWidth(landmarks_points)*1))
+        elif prop_index == 4:
+            desired_width, desired_height = resize_overlay_image(True, image, int(getFaceWidth(landmarks_points)*1))
+        elif prop_index == 5:
+            desired_width, desired_height = resize_overlay_image(True, image, int(getFaceWidth(landmarks_points)*1.2))
             # desired_width = int(desired_width * getFaceWidth(landmarks_points)/getFaceHeight(landmarks_points))
 
         # Resize the image
@@ -163,6 +167,18 @@ def overlay_image(frame, overlay_path, prop_index, scaleVal):
             
             x = (a + c) / 2
             y = (b + d) / 2
+        elif prop_index == 4:
+            a, b = landmarks_points[28]
+            c, d = landmarks_points[28]
+            
+            x = (a + c) / 2
+            y = (b + d) / 2
+        elif prop_index == 5:
+            a, b = landmarks_points[28]
+            c, d = landmarks_points[28]
+            
+            x = (a + c) / 2
+            y = (b + d) / 2
 
         # Get the size of the overlay image
         overlay_height, overlay_width, _ = overlay_image.shape
@@ -194,7 +210,7 @@ def overlay_image(frame, overlay_path, prop_index, scaleVal):
 
 def video_feed():
     # Open the default camera (index 0)
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
     
     
     # Reading resolution of camera input
@@ -212,7 +228,7 @@ def video_feed():
     # sliderButton = np.array([[0]*30]*sliderWidth) # create slider shape to be inserted into image
 
     # Load the overlay image
-    overlay_path = ["assets/moustache.png", "assets/propellor_hat.png", "assets/cap_hat.png", "assets/glasses.png"]
+    overlay_path = ["assets/moustache.png", "assets/propellor_hat.png", "assets/cap_hat.png", "assets/glasses.png", "assets/cool_glasses.png", "assets/graduation_glasses_transparent.png"]
 
     while True:
         global prop_selected
