@@ -107,6 +107,18 @@ def overlay_image(frame, overlay_path, prop_index, scaleVal):
             
             x = (a + c) / 2
             y = (b + d) / 2
+        elif prop_index == 4:
+            a, b = landmarks_points[28]
+            c, d = landmarks_points[28]
+            
+            x = (a + c) / 2
+            y = (b + d) / 2
+        elif prop_index == 5:
+            a, b = landmarks_points[28]
+            c, d = landmarks_points[28]
+            
+            x = (a + c) / 2
+            y = (b + d) / 2
 
         # Get the size of the overlay image
         overlay_height, overlay_width, _ = overlay_image.shape
@@ -138,7 +150,7 @@ def overlay_image(frame, overlay_path, prop_index, scaleVal):
 
 def video_feed():
     # Open the default camera (index 0)
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
     
     
     # Reading resolution of camera input
@@ -156,7 +168,7 @@ def video_feed():
     sliderButton = np.array([[0]*25]*sliderSize) # create slider shape to be inserted into image
 
     # Load the overlay image
-    overlay_path = ["assets/moustache.png", "assets/propellor_hat.png", "assets/cap_hat.png", "assets/glasses.png"]
+    overlay_path = ["assets/moustache.png", "assets/propellor_hat.png", "assets/cap_hat.png", "assets/glasses.png", "assets/cool_glasses.png", "assets/graduation_glasses_transparent.png"]
 
     while True:
         global prop_selected
