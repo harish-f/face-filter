@@ -14,7 +14,7 @@ detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
 
 
-prop_selected = 0
+prop_selected = 1
 
 def getFaceWidth(keypoints):
     return keypoints[16][0] - keypoints[0][0]
@@ -73,6 +73,10 @@ def overlay_image(frame, overlay_path, prop_index, scaleVal):
             desired_width, desired_height = resize_overlay_image(True, image, int(getFaceWidth(landmarks_points)*2*scaleVal))
         elif prop_index == 3:
             desired_width, desired_height = resize_overlay_image(True, image, int(getFaceWidth(landmarks_points)*1*scaleVal))
+        elif prop_index == 4:
+            desired_width, desired_height = resize_overlay_image(True, image, int(getFaceWidth(landmarks_points)*1.5*scaleVal))
+        elif prop_index == 5:
+            desired_width, desired_height = resize_overlay_image(True, image, int(getFaceWidth(landmarks_points)*1.5*scaleVal))
 
         # Resize the image
         try: overlay_image = cv2.resize(image, (desired_width, desired_height))
@@ -152,7 +156,7 @@ def overlay_image(frame, overlay_path, prop_index, scaleVal):
 
 def video_feed():
     # Open the default camera (index 0)
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
     
     
     # Reading resolution of camera input
@@ -251,7 +255,7 @@ def switch_prop():
     global prop_selected
     print(int(request.args["prop"]))
     prop_selected = int(request.args["prop"])
-    return
+    return Response()
 
 @app.route('/video_feed')
 def video_feed_route():
