@@ -64,6 +64,7 @@ def overlay_image(frame, overlay_path, prop_index, scaleVal):
         # Convert dlib landmarks to numpy array
         landmarks_points = np.array([[landmark.x, landmark.y] for landmark in landmarks.parts()])
 
+        # resize selected prop based on face width and preset constant
         if prop_index == 0:
             desired_width, desired_height = resize_overlay_image(True, image, int(getFaceWidth(landmarks_points)*scaleVal))
         elif prop_index == 1:
@@ -150,18 +151,20 @@ def overlay_image(frame, overlay_path, prop_index, scaleVal):
 
 def video_feed():
     # Open the default camera (index 0)
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(0)
     
     
     # Reading resolution of camera input
-    _, frame = cap.read()
+    ret, frame = cap.read()
+    while not ret:
+        ret, frame = cap.read()
     frameWidth = len(frame[0])
     frameHeight = len(frame)
     
     
     clicked = False # initialise variable to check if finger is clicked
     initialFinger = 0 # initalise start position of finger gesture
-    sliderVal = 255 # initialise slider value 0 to 255
+    sliderVal = 100 # initialise slider value 0 to 255
     sliderSize = 30 # specify width of slider
 
     sliderBase = np.array([[255]*10]*(frameHeight-20)) # create slider base to be inserted into image
@@ -177,7 +180,6 @@ def video_feed():
         if not ret:
             break
 
-
         # calculating the slider's position relative to the image
         if sliderVal >= 255:
             sliderVal = 254
@@ -190,7 +192,6 @@ def video_feed():
             for c in range(3):
                 frame[10:-10,-30:-20,c] = sliderBase
                 frame[buttonPos:buttonPos+sliderSize,-37:-12,c] = sliderButton
-        
 
 
         with mp_hands.Hands(min_detection_confidence=0.8, min_tracking_confidence=0.5) as hands:
@@ -206,17 +207,23 @@ def video_feed():
                     keypoints = hand_keypoints.landmark
                     if clicked:
                         if not isClicked(keypoints):
+                            # reset clicked and initial finger vars if stopped clicking
                             clicked = False
                             initialFinger = 0
+
                             continue
-                        sliderVal += (keypoints[4].y - initialFinger) * (255 + sliderSize) * 2 # calculating change in sliderVal based on y movement of finger
+
+                        # calculating change in sliderVal based on y movement of finger
+                        sliderVal += (keypoints[4].y - initialFinger) * (255 + sliderSize) * 2
                         initialFinger = keypoints[4].y
-                    elif isClicked(keypoints): # changes clicked var to true if click is detected and clicked was initially false
+
+                    elif isClicked(keypoints):
+                        # changes clicked var to true if click is detected and clicked was initially false
                         clicked = True
                         initialFinger = keypoints[4].y
         
         # Overlay the image with the specified keypoint
-        frame = overlay_image(frame, overlay_path[prop_selected], prop_selected, (255/sliderVal)+0.5 if prop_selected == 0 else 1)
+        frame = overlay_image(frame, overlay_path[prop_selected], prop_selected, (sliderVal/255 + 0.5) if prop_selected == 0 else 1)
             
 
         # Encode the frame as JPEG
